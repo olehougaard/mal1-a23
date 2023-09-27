@@ -30,8 +30,8 @@ def plot_results(train_score, test_score, train_label = None, test_label = None,
 
 def grid_plot(elements, width, height, make_plot, figsize = (20, 20)):
     if (width * height < len(elements)): raise ValueError("Insufficient room in the grid")
-    fig, axes = plt.subplots(width, height, figsize = figsize)
-    for i, element in enumerate(elements):
-        ax=axes[i // width][i % width]
-        make_plot(ax, element)
+    fig, axes = plt.subplots(height, width, figsize = figsize)
+    for index, element in enumerate(elements):
+        ax=axes[index // width][index % width]
+        make_plot(ax, element, index)
     return axes
