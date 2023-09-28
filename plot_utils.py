@@ -20,13 +20,15 @@ def visualize_tree(dtree, feature_names, class_names):
     file_name = save_tree(dtree, feature_names, class_names)
     return Source.from_file(file_name)
 
-def plot_results(train_score, test_score, train_label = None, test_label = None, xlabel = None, ylabel = None, xvalues = None):
+def plot_results(train_score, test_score, train_label = None, test_label = None, xlabel = None, ylabel = None, xvalues = None, ax = None):
+    if not ax:
+        fig, ax = plt.subplots(1, 1)
     if not xvalues: xvalues = range(1, len(train_score) + 1)
-    plt.plot(xvalues,train_score,'-', label = train_label)
-    plt.plot(xvalues,test_score,'-', label = test_label)
-    if xlabel: plt.xlabel(xlabel)
-    if ylabel: plt.ylabel(ylabel)
-    if xlabel or ylabel: plt.legend()
+    ax.plot(xvalues,train_score,'-', label = train_label)
+    ax.plot(xvalues,test_score,'-', label = test_label)
+    if xlabel: ax.set_xlabel(xlabel)
+    if ylabel: ax.set_ylabel(ylabel)
+    if xlabel or ylabel: ax.legend()
 
 def grid_plot(elements, width, height, make_plot, figsize = (20, 20)):
     if (width * height < len(elements)): raise ValueError("Insufficient room in the grid")
