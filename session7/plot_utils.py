@@ -1,7 +1,10 @@
 from sklearn.tree import export_graphviz
 from graphviz import Source
 import matplotlib.pyplot as plt
+import numpy as np
 import tempfile
+from math import floor, ceil
+
 
 def save_tree(dtree, feature_names, class_names): 
     temp = tempfile.TemporaryFile(suffix='.dot')
@@ -37,3 +40,11 @@ def grid_plot(elements, width, height, make_plot, figsize = (20, 20)):
         ax=axes[index // width][index % width]
         make_plot(ax, element, index)
     return axes
+
+def plot_probabilities(classifier, X, y, cmap, levels = 10):
+    xs, ys =  X[:, 0], X[:, 1]
+    xx, yy = np.meshgrid(np.arange(floor(xs.min()), ceil(xs.max()*1.1), .1), np.arange(floor(ys.min()), ceil(ys.max()*1.1), .1))
+    Z = classifier.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
+    plt.contourf(xx, yy, Z.reshape(xx.shape), cmap = 'viridis', levels = levels)
+    plt.colorbar()
+    plt.scatter(xs, ys, c=y, cmap=cmap)
